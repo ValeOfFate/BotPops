@@ -22,7 +22,7 @@ async def pTime(ctx):
     if (ctx.author.voice):
         channel = ctx.message.author.voice.channel
         voice = await channel.connect()
-        source = FFmpegPCMAudio('Rss/PM.wav')
+        source = FFmpegPCMAudio('Files/PM.wav')
         player = voice.play(source)
 
 
@@ -46,6 +46,17 @@ async def on_message(message):
         await message.channel.send('cal')
 
     await bot.process_commands(message)
+
+@bot.event
+async def on_voice_state_update(member, before, after):
+
+      if before.channel is None and after.channel is not None:
+        if after.channel.id == 774879876670029864:
+            channel = after.channel
+            voice = await channel.connect()
+            source = FFmpegPCMAudio('Files/PM.wav')
+            player = voice.play(source)
+         #do whatever you want here
 
 
 # Token
