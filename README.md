@@ -1,0 +1,2 @@
+# BotPops
+Simple Discord Bot
