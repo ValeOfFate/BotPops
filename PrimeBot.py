@@ -1,3 +1,4 @@
+import asyncio
 from discord.ext import commands
 import discord
 from discord import FFmpegPCMAudio
@@ -32,7 +33,7 @@ uFile.close()
 # Startup
 @bot.event
 async def on_ready():
-    print('AWAWA')
+    print('Bot Ready')
 
 @bot.event
 async def on_message(message):
@@ -63,19 +64,29 @@ async def on_voice_state_update(member, before, after):
         if after.channel != None and after.channel.id == DomainAddress and len(after.channel.members) == 1:
             channel = after.channel
             BotClient = await channel.connect()
-            source = FFmpegPCMAudio('Files/PM.wav')
-            player = BotClient.play(source)
+            # Create voice Loop
+            bot.loop.create_task(play_source(BotClient, channel))
 
         # Natural Leaving
         if before.channel != None and before.channel.id == DomainAddress and len(before.channel.members) == 1:
             channel = before.channel
-            await voice_state.disconnect()
+            voice_state.stop() # Stops the audio
+            await voice_state.disconnect() # Disconnects the bot
 
     # Forced Leaving
     if member.id == BotID and after.channel != None: 
-        if after.channel != None and after.channel.id != DomainAddress:
+        if after.channel.id != DomainAddress:
             channel = before.channel
+            voice_state.stop()
             discon = await voice_state.disconnect(force=True)
+
+# Voice loop
+async def play_source(voice_client, channel):
+    # Ensures no errors when disconnecting the bot
+    if channel.id == DomainAddress and len(channel.members) != 1:
+        await asyncio.sleep(0.5)
+        source = FFmpegPCMAudio("Files/PM.wav")
+        voice_client.play(source, after=lambda e: print('Player error: %s' % e) if e else bot.loop.create_task(play_source(voice_client, channel)))
 
 # Token
 bot.run(BotToken)
