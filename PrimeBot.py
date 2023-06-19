@@ -8,6 +8,7 @@ SklarChannel = ''
 BotToken = ''
 DomainAddress = ''
 BotID = ''
+SklarValues = ''
 
 # Bot Creation
 intents = discord.Intents.all()
@@ -22,6 +23,9 @@ BotToken = Obj['BotToken']
 SklarChannel = Obj['SklarChannel']
 DomainAddress = Obj['DomainAddress']
 BotID = Obj['BotID']
+SklarValues = Obj['SklarValues']
+
+uFile.close()
 
 # Client Components
 
@@ -36,10 +40,11 @@ async def on_message(message):
         return
     
     # Sklar Protection
-    if message.channel.id == SklarChannel:
-        if message.content != "sklar":
+    if message.channel.id == SklarChannel and message.author != 690261128596816027:
+        if message.content not in SklarValues:
             await message.channel.send('sklar') 
             await message.delete()
+            return
 
     # Message Replies
     if message.content == 'cal':

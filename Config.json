@@ -1,6 +1,7 @@
 {
-    "BotToken": "Add Here",
+    "BotToken": "Enter Here",
     "BotID": 1118019637955797082,
     "SklarChannel": 800977648104112168,
-    "DomainAddress": 774879876670029864 
+    "DomainAddress": 774879876670029864,
+    "SklarValues": ["Sklar", "sklar", "<:Sklar:799906506362716170>", "<:TE_Prayge:981553501656215602>"]
 }
